@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Album de Soumaya 📸</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    font-family: 'Quicksand', sans-serif;
+    color: #6b3a55;
+    background: linear-gradient(135deg,#ffe0ec 0%,#fff5f8 50%,#f3e0ff 100%);
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 26px;
+  }
+  .nav {
+    text-decoration: none;
+    color: #ff7eb9;
+    background: rgba(255,255,255,0.8);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(255,126,185,0.2);
+  }
+  .nav.primary {
+    color: white;
+    background: linear-gradient(135deg,#ff7eb9,#c879ff);
+    box-shadow: 0 6px 18px rgba(255,126,185,0.4);
+  }
+
+  header.title {
+    text-align: center;
+    padding: 20px 16px 10px;
+  }
+  header h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(32px, 6vw, 54px);
+    color: #ff7eb9;
+  }
+  header .sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    color: #b96ad9;
+    margin-top: 6px;
+  }
+  header .desc {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #8e5a78;
+  }
+
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 40px 20px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .polaroid {
+    background: white;
+    padding: 14px 14px 50px;
+    border-radius: 6px;
+    box-shadow: 0 14px 32px rgba(255,126,185,0.28), 0 4px 8px rgba(0,0,0,0.08);
+    transition: transform .35s ease, box-shadow .35s ease;
+    position: relative;
+    width: 260px;
+    cursor: pointer;
+  }
+  .polaroid:nth-child(1) { transform: rotate(-4deg); }
+  .polaroid:nth-child(2) { transform: rotate(3deg); }
+  .polaroid:nth-child(3) { transform: rotate(-2deg); }
+  .polaroid:nth-child(4) { transform: rotate(4deg); }
+
+  .polaroid:hover {
+    transform: rotate(0deg) translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(255,126,185,0.45), 0 6px 12px rgba(0,0,0,0.1);
+    z-index: 5;
+  }
+
+  .polaroid img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 3px;
+    display: block;
+    background: linear-gradient(135deg,#ffe0ec,#f3e0ff);
+  }
+
+  .polaroid .caption {
+    position: absolute;
+    bottom: 10px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 22px;
+    color: #b96ad9;
+  }
+
+  .polaroid::before {
+    content: "♡";
+    position: absolute;
+    top: -10px; right: -8px;
+    font-size: 24px;
+    background: #ff7eb9;
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(255,126,185,0.5);
+  }
+
+  .tape {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 80px;
+    height: 26px;
+    background: rgba(255, 200, 224, 0.7);
+    border-left: 1px dashed rgba(255,255,255,0.5);
+    border-right: 1px dashed rgba(255,255,255,0.5);
+  }
+
+  /* lightbox */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(107,58,85,0.7);
+    backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+  .lightbox.show { display: flex; }
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 85vh;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    border: 8px solid white;
+  }
+  .lightbox .close {
+    position: absolute;
+    top: 20px; right: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    font-size: 22px;
+    color: #ff7eb9;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  .quote {
+    text-align: center;
+    margin: 20px auto 50px;
+    max-width: 600px;
+    padding: 0 24px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    color: #b96ad9;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="nav" href="memory.html">← les petits mots</a>
+  <a class="nav primary" href="index.html">accueil ♡</a>
+</div>
+
+<header class="title">
+  <h1>Album souvenirs ✿</h1>
+  <div class="sub">~ 25 ans en quelques sourires ~</div>
+  <div class="desc">clique sur une photo pour l'agrandir</div>
+</header>
+
+<div class="gallery" id="gallery">
+  <div class="polaroid" data-src="images/photo1.jpg">
+    <div class="tape"></div>
+    <img src="images/photo1.jpg" alt="Soumaya" loading="lazy" />
+    <div class="caption">douceur ♡</div>
+  </div>
+  <div class="polaroid" data-src="images/photo2.jpg">
+    <div class="tape"></div>
+    <img src="images/photo2.jpg" alt="Soumaya" loading="lazy" />
+    <div class="caption">rêveuse ✿</div>
+  </div>
+  <div class="polaroid" data-src="images/photo3.jpg">
+    <div class="tape"></div>
+    <img src="images/photo3.jpg" alt="Soumaya" loading="lazy" />
+    <div class="caption">sourire éclatant ☀</div>
+  </div>
+  <div class="polaroid" data-src="images/photo4.jpg">
+    <div class="tape"></div>
+    <img src="images/photo4.jpg" alt="Soumaya" loading="lazy" />
+    <div class="caption">étincelante ✨</div>
+  </div>
+</div>
+
+<div class="quote">
+  « Les photos s'effacent, mais les sourires comme les tiens restent gravés pour toujours. »
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" id="closeLb">✕</button>
+  <img id="lbImg" src="" alt="" />
+</div>
+
+<script>
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  document.querySelectorAll('.polaroid').forEach(p => {
+    p.addEventListener('click', () => {
+      lbImg.src = p.dataset.src;
+      lb.classList.add('show');
+    });
+  });
+  document.getElementById('closeLb').addEventListener('click', () => lb.classList.remove('show'));
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('show'); });
+</script>
+
+</body>
+</html>

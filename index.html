@@ -162,6 +162,38 @@
     animation: bounce 2.5s ease-in-out infinite;
     display: inline-block;
   }
+
+  .portrait {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid white;
+    box-shadow: 0 14px 34px rgba(255,126,185,0.45);
+    margin-bottom: 16px;
+    animation: bounce 4s ease-in-out infinite;
+    background: linear-gradient(135deg,#ffd1e3,#e7c6ff);
+  }
+  .portrait-frame {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+  .portrait-frame::before {
+    content: "♡";
+    position: absolute;
+    top: -8px; right: 0;
+    background: #ff7eb9;
+    color: white;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(255,126,185,0.5);
+    z-index: 2;
+  }
   @keyframes bounce {
     0%, 100% { transform: translateY(0) rotate(-3deg); }
     50%      { transform: translateY(-12px) rotate(3deg); }
@@ -180,6 +212,9 @@
 
 <div class="container">
   <div class="badge">♡ 02 Mai · jour magique ♡</div>
+  <div class="portrait-frame">
+    <img class="portrait" src="images/photo1.jpg" alt="Soumaya" onerror="this.style.display='none'" />
+  </div>
   <span class="kawaii">(˶ᵔ ᵕ ᵔ˶)</span>
   <h1>Joyeux Anniversaire</h1>
   <div class="name">Soumaya</div>
@@ -195,7 +230,8 @@
 
   <div class="buttons">
     <a href="cake.html" class="btn">🎂 Souffle les bougies</a>
-    <a href="memory.html" class="btn secondary">💌 Petits mots pour toi</a>
+    <a href="memory.html" class="btn secondary">💌 Petits mots</a>
+    <a href="gallery.html" class="btn secondary">📸 Album</a>
   </div>
 
   <footer>fait avec beaucoup de ♡ pour Soumaya</footer>
