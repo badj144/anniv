@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Petits mots pour Soumaya 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    font-family: 'Quicksand', sans-serif;
+    color: #6b3a55;
+    background: linear-gradient(135deg,#ffe0ec 0%,#fff5f8 50%,#f3e0ff 100%);
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 26px;
+  }
+  .nav {
+    text-decoration: none;
+    color: #ff7eb9;
+    background: rgba(255,255,255,0.8);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(255,126,185,0.2);
+  }
+  .nav.primary {
+    color: white;
+    background: linear-gradient(135deg,#ff7eb9,#c879ff);
+    box-shadow: 0 6px 18px rgba(255,126,185,0.4);
+  }
+
+  header.title {
+    text-align: center;
+    padding: 20px 16px 10px;
+  }
+  header h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(32px, 6vw, 54px);
+    color: #ff7eb9;
+  }
+  header .sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: 22px;
+    color: #b96ad9;
+    margin-top: 4px;
+  }
+  header .desc {
+    margin-top: 12px;
+    font-size: 15px;
+    color: #8e5a78;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    padding: 30px max(20px, 4vw) 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .envelope {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(135deg,#ffd1e3,#ffc1d8);
+    border-radius: 14px;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 10px 26px rgba(255,126,185,0.28);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .envelope:hover {
+    transform: translateY(-4px) rotate(-1deg);
+    box-shadow: 0 14px 32px rgba(255,126,185,0.4);
+  }
+  .envelope::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, transparent 50%, #ff9ec7 50%);
+  }
+  .envelope::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(135deg,#ffb6d9,#ff9ec7);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transition: transform .5s ease;
+    transform-origin: top;
+    z-index: 3;
+  }
+  .seal {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px; height: 44px;
+    background: radial-gradient(circle at 30% 30%,#fff,#ff7eb9 70%);
+    border-radius: 50%;
+    z-index: 4;
+    box-shadow: 0 4px 12px rgba(255,126,185,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+  }
+  .label {
+    position: absolute;
+    bottom: 14px;
+    left: 0; right: 0;
+    text-align: center;
+    z-index: 4;
+    color: white;
+    font-family: 'Dancing Script', cursive;
+    font-size: 22px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .envelope.open::after {
+    transform: rotateX(180deg);
+  }
+
+  /* modal */
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(107,58,85,0.45);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+  .card {
+    background: linear-gradient(180deg,#fffafd,#fff5f8);
+    border: 2px dashed #ffc6e0;
+    border-radius: 22px;
+    padding: 30px 28px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(255,126,185,0.35);
+    position: relative;
+    animation: pop .4s ease;
+  }
+  @keyframes pop {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .card .emoji { font-size: 48px; margin-bottom: 8px; }
+  .card h3 {
+    font-family: 'Pacifico', cursive;
+    color: #ff7eb9;
+    font-weight: normal;
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  .card p {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .close {
+    position: absolute;
+    top: 10px; right: 14px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #b96ad9;
+    cursor: pointer;
+  }
+
+  .quote {
+    text-align: center;
+    margin: 20px auto 50px;
+    max-width: 600px;
+    padding: 0 24px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 26px;
+    color: #b96ad9;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="nav" href="cake.html">← le gâteau</a>
+  <a class="nav primary" href="index.html">accueil ♡</a>
+</div>
+
+<header class="title">
+  <h1>Petits mots pour toi ✿</h1>
+  <div class="sub">~ ouvre une enveloppe à la fois ~</div>
+  <div class="desc">25 raisons (au moins) de te dire combien tu comptes ♡</div>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<div class="quote">
+  « Les belles personnes laissent des traces de douceur partout où elles passent. »<br/>
+  — et toi tu en laisses partout, Soumaya ✿
+</div>
+
+<div class="modal-bg" id="modal">
+  <div class="card">
+    <button class="close" id="closeBtn">✕</button>
+    <div class="emoji" id="mEmoji">♡</div>
+    <h3 id="mTitle"></h3>
+    <p id="mText"></p>
+  </div>
+</div>
+
+<script>
+  const messages = [
+    { e:"🌸", t:"Ton sourire", m:"Ton sourire fait fondre les nuages les plus gris. C'est un petit soleil de poche." },
+    { e:"💖", t:"Ton cœur", m:"Tu as un cœur immense, qui sait écouter, comprendre et accueillir. C'est un trésor rare." },
+    { e:"✨", t:"Ta lumière", m:"Tu illumines les pièces sans même t'en rendre compte. Reste exactement comme tu es." },
+    { e:"🎀", t:"Ta douceur", m:"Ta douceur apaise tout autour de toi. C'est un super-pouvoir, ne l'oublie jamais." },
+    { e:"🌷", t:"Ton rire", m:"Ton rire est ma musique préférée. Que cette année en soit remplie." },
+    { e:"☕", t:"Tes petites manies", m:"Même tes petites manies sont adorables. Surtout elles, en fait." },
+    { e:"📚", t:"Ton intelligence", m:"Tu réfléchis avec finesse, tu vois les choses que d'autres ne voient pas." },
+    { e:"🌙", t:"Tes nuits longues", m:"Pour toutes les nuits où tu doutes : tu es plus forte que tu ne le crois." },
+    { e:"☀️", t:"Tes matins", m:"Que chacun de tes matins commence par une bonne raison de sourire." },
+    { e:"🦋", t:"Ta liberté", m:"Continue de voler, de rêver, de vouloir grand. Le monde a besoin de toi en grand." },
+    { e:"🍓", t:"Ta gourmandise", m:"Promis, cette année il y aura plein de gâteaux, de sucre et de petits plaisirs." },
+    { e:"🌈", t:"Tes rêves", m:"Que tous tes rêves trouvent leur chemin jusqu'à toi, un par un." },
+    { e:"💌", t:"Tes mots", m:"Tu as une façon unique de dire les choses. Garde ta voix, elle est précieuse." },
+    { e:"🌟", t:"Ton courage", m:"Tout ce que tu as déjà traversé prouve que tu peux traverser tout le reste aussi." },
+    { e:"🍰", t:"Tes 25 ans", m:"25 ans, c'est l'âge où tout s'ouvre. Profite, ose, savoure." },
+    { e:"🎵", t:"Tes playlists", m:"Que tu trouves toujours la chanson parfaite pour le moment parfait." },
+    { e:"🐰", t:"Ton côté kawaii", m:"Tu peux être adorable et puissante en même temps. Et tu es exactement ça." },
+    { e:"🌺", t:"Ta beauté", m:"Une beauté qui ne se résume pas au reflet : celle qui se voit dans tes gestes." },
+    { e:"💝", t:"Tes amis", m:"Que tu sois entourée de gens qui te voient vraiment, comme tu le mérites." },
+    { e:"🕊️", t:"Ta paix", m:"Que cette année t'apporte du calme, des respirations profondes, des dimanches doux." },
+    { e:"🧁", t:"Tes petits bonheurs", m:"Les petits bonheurs comptent autant que les grands. Collectionne-les." },
+    { e:"🌻", t:"Ta force tranquille", m:"Tu n'as pas besoin de crier pour être entendue. Ta présence parle pour toi." },
+    { e:"🪄", t:"Ta magie", m:"Tu as ce truc inexplicable qui fait que les gens se sentent bien près de toi." },
+    { e:"💞", t:"L'amour", m:"Que tu aimes et sois aimée à la hauteur de ce que tu offres au monde." },
+    { e:"🎂", t:"Ce nouveau chapitre", m:"Joyeux anniversaire Soumaya. Merci d'exister. La suite va être belle. ♡" },
+  ];
+
+  const grid = document.getElementById('grid');
+  messages.forEach((msg, i) => {
+    const env = document.createElement('div');
+    env.className = 'envelope';
+    env.innerHTML = `
+      <div class="seal">${msg.e}</div>
+      <div class="label">n°${i+1}</div>
+    `;
+    env.addEventListener('click', () => {
+      env.classList.add('open');
+      setTimeout(() => openModal(msg), 350);
+    });
+    grid.appendChild(env);
+  });
+
+  const modal = document.getElementById('modal');
+  function openModal(msg) {
+    document.getElementById('mEmoji').textContent = msg.e;
+    document.getElementById('mTitle').textContent = msg.t;
+    document.getElementById('mText').textContent = msg.m;
+    modal.classList.add('show');
+  }
+  document.getElementById('closeBtn').addEventListener('click', () => modal.classList.remove('show'));
+  modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('show'); });
+</script>
+
+</body>
+</html>

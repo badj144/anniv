@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Le gâteau de Soumaya 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    font-family: 'Quicksand', sans-serif;
+    color: #6b3a55;
+    background: linear-gradient(135deg, #ffe0ec 0%, #fff5f8 50%, #f3e0ff 100%);
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 26px;
+    position: relative;
+    z-index: 5;
+  }
+  .back {
+    text-decoration: none;
+    color: #ff7eb9;
+    background: rgba(255,255,255,0.8);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(255,126,185,0.2);
+  }
+  .next {
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(135deg,#ff7eb9,#c879ff);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(255,126,185,0.4);
+  }
+
+  .wrap {
+    text-align: center;
+    padding: 10px 20px 60px;
+  }
+
+  h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: clamp(30px, 6vw, 48px);
+    color: #ff7eb9;
+    margin-bottom: 6px;
+  }
+  .sub {
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    color: #b96ad9;
+    margin-bottom: 8px;
+  }
+  .hint {
+    font-size: 15px;
+    color: #8e5a78;
+    margin-bottom: 20px;
+  }
+  .hint b { color: #ff7eb9; }
+
+  .stage {
+    position: relative;
+    width: min(420px, 92vw);
+    height: 460px;
+    margin: 10px auto 0;
+  }
+
+  /* gâteau */
+  .cake { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 320px; }
+  .plate {
+    width: 360px; height: 22px;
+    background: linear-gradient(180deg,#fff,#f1d6e3);
+    border-radius: 50%;
+    margin-left: -20px;
+    box-shadow: 0 8px 18px rgba(255,126,185,0.25);
+  }
+  .layer {
+    position: relative;
+    margin: 0 auto;
+    border-radius: 14px 14px 6px 6px;
+    box-shadow: inset 0 -8px 0 rgba(0,0,0,0.06), 0 6px 14px rgba(255,126,185,0.18);
+  }
+  .layer.bottom {
+    width: 320px; height: 110px;
+    background: repeating-linear-gradient(45deg,#ffd1e3 0 14px,#ffc1d8 14px 28px);
+    margin-top: -8px;
+  }
+  .layer.middle {
+    width: 250px; height: 90px;
+    background: repeating-linear-gradient(45deg,#ffe9d6 0 14px,#ffd9be 14px 28px);
+    margin-top: -10px;
+  }
+  .layer.top {
+    width: 180px; height: 80px;
+    background: repeating-linear-gradient(45deg,#e7c6ff 0 14px,#d9aaff 14px 28px);
+    margin-top: -10px;
+  }
+
+  /* glaçage qui dégouline */
+  .frosting {
+    position: absolute;
+    top: -6px;
+    left: 0; right: 0;
+    height: 18px;
+    background: #fff5f8;
+    border-radius: 12px;
+    filter: drop-shadow(0 3px 0 rgba(255,200,224,0.7));
+  }
+  .frosting::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 100%;
+    height: 14px;
+    background:
+      radial-gradient(circle at 10% 0,#fff5f8 8px,transparent 9px),
+      radial-gradient(circle at 30% 0,#fff5f8 10px,transparent 11px),
+      radial-gradient(circle at 55% 0,#fff5f8 7px,transparent 8px),
+      radial-gradient(circle at 78% 0,#fff5f8 11px,transparent 12px),
+      radial-gradient(circle at 92% 0,#fff5f8 8px,transparent 9px);
+  }
+
+  /* déco fraises et perles */
+  .deco {
+    position: absolute;
+    font-size: 18px;
+    top: 6px;
+  }
+
+  /* bougies */
+  .candles {
+    position: absolute;
+    top: -78px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 18px;
+    align-items: flex-end;
+  }
+  .candle {
+    position: relative;
+    width: 10px; height: 60px;
+    background: repeating-linear-gradient(180deg,#ff7eb9 0 10px,#ffc1d8 10px 20px);
+    border-radius: 4px;
+  }
+  .flame {
+    position: absolute;
+    top: -20px; left: 50%;
+    transform: translateX(-50%);
+    width: 14px; height: 22px;
+    background: radial-gradient(circle at 50% 70%, #fff8a3 0%, #ffb347 55%, #ff6f3c 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 0 0 18px 6px rgba(255,179,71,0.7);
+    animation: flicker 0.25s infinite alternate;
+    transform-origin: 50% 100%;
+  }
+  @keyframes flicker {
+    0%   { transform: translateX(-50%) scale(1) rotate(-2deg); }
+    100% { transform: translateX(-50%) scale(1.08) rotate(2deg); }
+  }
+  .candle.off .flame { display: none; }
+  .candle.off::before {
+    content: "";
+    position: absolute;
+    top: -18px; left: 50%;
+    width: 1px; height: 14px;
+    background: linear-gradient(180deg, rgba(180,180,180,0.6), transparent);
+    transform: translateX(-50%);
+    animation: smoke 1.2s ease-out forwards;
+  }
+  @keyframes smoke {
+    0%   { opacity: 0.8; transform: translate(-50%, 0) scaleX(1); }
+    100% { opacity: 0; transform: translate(-50%, -16px) scaleX(2); }
+  }
+
+  /* visage kawaii sur le gâteau */
+  .face {
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 28px;
+    color: #6b3a55;
+    user-select: none;
+  }
+
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: none;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    background: white;
+    color: #ff7eb9;
+    border: 2px solid #ffc6e0;
+    box-shadow: 0 6px 16px rgba(255,126,185,0.18);
+    transition: transform .2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.primary {
+    background: linear-gradient(135deg,#ff7eb9,#c879ff);
+    color: white;
+    border: none;
+    box-shadow: 0 8px 22px rgba(255,126,185,0.45);
+  }
+  .mic-status {
+    font-size: 13px;
+    color: #8e5a78;
+    margin-top: 10px;
+    min-height: 20px;
+  }
+
+  /* message final */
+  .wish {
+    margin: 30px auto 0;
+    max-width: 520px;
+    background: rgba(255,255,255,0.85);
+    border: 2px dashed #ffc6e0;
+    border-radius: 22px;
+    padding: 22px 24px;
+    font-size: 17px;
+    line-height: 1.7;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all .8s ease;
+  }
+  .wish.show { opacity: 1; transform: translateY(0); }
+  .wish h2 {
+    font-family: 'Pacifico', cursive;
+    color: #ff7eb9;
+    margin-bottom: 8px;
+    font-weight: normal;
+  }
+
+  /* confettis */
+  .confetti {
+    position: fixed;
+    top: -20px;
+    width: 10px; height: 14px;
+    z-index: 99;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0.7; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← retour</a>
+  <a class="next" href="memory.html">les petits mots →</a>
+</div>
+
+<div class="wrap">
+  <h1>Souffle tes 25 bougies ✿</h1>
+  <div class="sub">Ferme les yeux, fais un vœu...</div>
+  <div class="hint">clique sur une bougie, ou clique <b>"Souffler"</b> · ou souffle vraiment dans le micro 🎤</div>
+
+  <div class="stage">
+    <div class="cake">
+      <div class="candles" id="candles"></div>
+
+      <div class="layer top">
+        <div class="frosting"></div>
+        <span class="deco" style="left:20px">🍓</span>
+        <span class="deco" style="left:80px">♡</span>
+        <span class="deco" style="left:140px">🍓</span>
+      </div>
+      <div class="layer middle">
+        <div class="frosting"></div>
+        <span class="deco" style="left:20px">✿</span>
+        <span class="deco" style="left:110px">🍒</span>
+        <span class="deco" style="left:200px">✿</span>
+      </div>
+      <div class="layer bottom">
+        <div class="frosting"></div>
+        <div class="face">( ˶ˆᗜˆ˵ )</div>
+        <span class="deco" style="left:20px;top:60px">♡</span>
+        <span class="deco" style="left:280px;top:60px">♡</span>
+        <span class="deco" style="left:60px;top:80px">⋆</span>
+        <span class="deco" style="left:240px;top:80px">⋆</span>
+      </div>
+      <div class="plate"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn primary" id="blowBtn">🌬️ Souffler</button>
+    <button class="btn" id="micBtn">🎤 Activer le micro</button>
+    <button class="btn" id="resetBtn">↻ Rallumer</button>
+  </div>
+  <div class="mic-status" id="micStatus"></div>
+
+  <div class="wish" id="wish">
+    <h2>Vœu exaucé ♡</h2>
+    Que cette nouvelle année soit pleine de douceur, de rires et d'amour.
+    Tu mérites tout le bonheur du monde, Soumaya. ✿<br/>
+    <a href="memory.html" style="color:#c879ff;font-weight:600;text-decoration:none">→ Lis les petits mots pour toi</a>
+  </div>
+</div>
+
+<script>
+  const NB = 25;
+  const candlesEl = document.getElementById('candles');
+  const wish = document.getElementById('wish');
+  const micStatus = document.getElementById('micStatus');
+
+  // 5 rangées de 5 pour ne pas dépasser
+  const rows = 5, perRow = 5;
+  candlesEl.style.flexWrap = 'wrap';
+  candlesEl.style.justifyContent = 'center';
+  candlesEl.style.maxWidth = '200px';
+  candlesEl.style.gap = '10px 12px';
+
+  for (let i = 0; i < NB; i++) {
+    const c = document.createElement('div');
+    c.className = 'candle';
+    c.innerHTML = '<div class="flame"></div>';
+    c.addEventListener('click', () => extinguish(c));
+    candlesEl.appendChild(c);
+  }
+
+  function extinguish(c) {
+    if (!c.classList.contains('off')) {
+      c.classList.add('off');
+      checkAllOut();
+    }
+  }
+  function blowAll() {
+    document.querySelectorAll('.candle').forEach((c, i) => {
+      setTimeout(() => extinguish(c), i * 60);
+    });
+  }
+  function relight() {
+    document.querySelectorAll('.candle').forEach(c => c.classList.remove('off'));
+    wish.classList.remove('show');
+  }
+  function checkAllOut() {
+    const all = [...document.querySelectorAll('.candle')];
+    if (all.every(c => c.classList.contains('off'))) {
+      wish.classList.add('show');
+      launchConfetti();
+    }
+  }
+
+  document.getElementById('blowBtn').addEventListener('click', blowAll);
+  document.getElementById('resetBtn').addEventListener('click', relight);
+
+  // micro
+  document.getElementById('micBtn').addEventListener('click', async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const src = ctx.createMediaStreamSource(stream);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 1024;
+      src.connect(analyser);
+      const data = new Uint8Array(analyser.frequencyBinCount);
+      micStatus.textContent = "🎤 micro actif · souffle fort !";
+      function loop() {
+        analyser.getByteTimeDomainData(data);
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+          const v = (data[i] - 128) / 128;
+          sum += v * v;
+        }
+        const rms = Math.sqrt(sum / data.length);
+        if (rms > 0.25) blowAll();
+        requestAnimationFrame(loop);
+      }
+      loop();
+    } catch (e) {
+      micStatus.textContent = "micro indisponible · utilise le bouton Souffler ♡";
+    }
+  });
+
+  function launchConfetti() {
+    const colors = ['#ff7eb9','#ffc1d8','#c879ff','#ffd6a5','#ffe0ec','#fff5a3'];
+    for (let i = 0; i < 80; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (2 + Math.random()*2.5) + 's';
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 5000);
+    }
+  }
+</script>
+
+</body>
+</html>
