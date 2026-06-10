@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion commerciale — Devis & Factures</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-soft: #eff6ff;
+      --sidebar: #0f1e3a;
+      --sidebar-muted: #94a3b8;
+      --green: #16a34a;
+      --green-soft: #dcfce7;
+      --amber: #d97706;
+      --amber-soft: #fef3c7;
+      --red: #dc2626;
+      --red-soft: #fee2e2;
+      --gray-soft: #f1f5f9;
+      --radius: 10px;
+      --shadow: 0 1px 3px rgba(15, 30, 58, 0.06), 0 1px 2px rgba(15, 30, 58, 0.04);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      background: var(--sidebar);
+      color: #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 20px 22px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+      font-size: 15px;
+    }
+
+    .nav-group-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sidebar-muted);
+      padding: 14px 20px 6px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 20px;
+      color: var(--sidebar-muted);
+      text-decoration: none;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-item:hover { background: rgba(255, 255, 255, 0.04); color: #e2e8f0; }
+
+    .nav-item.active {
+      color: #fff;
+      background: rgba(37, 99, 235, 0.18);
+      border-left-color: var(--primary);
+    }
+
+    .nav-item .ico { width: 18px; text-align: center; opacity: 0.9; }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 14px 20px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    .sidebar-footer .meta { font-size: 12px; line-height: 1.3; }
+    .sidebar-footer .meta strong { color: #f1f5f9; font-weight: 600; }
+    .sidebar-footer .meta span { color: var(--sidebar-muted); }
+
+    /* ---------- Main ---------- */
+    .main { display: flex; flex-direction: column; }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .breadcrumb { font-size: 13px; color: var(--text-muted); }
+    .breadcrumb strong { color: var(--text); font-weight: 600; }
+
+    .topbar-actions { display: flex; align-items: center; gap: 14px; }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gray-soft);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 7px 12px;
+      width: 260px;
+    }
+    .search:focus-within { border-color: var(--primary); background: #fff; }
+    .search input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; color: var(--text); }
+    .search .ico { color: var(--text-muted); }
+
+    .content { padding: 28px; }
+
+    .page-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .page-head h1 { font-size: 22px; font-weight: 700; }
+    .page-head p { color: var(--text-muted); margin-top: 2px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn:hover { background: var(--gray-soft); }
+    .btn-primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    /* ---------- Stat cards ---------- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+    }
+    .stat-card .label { color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .stat-card .value { font-size: 24px; font-weight: 700; margin-top: 8px; }
+    .stat-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ---------- Toolbar ---------- */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .tabs { display: flex; gap: 4px; background: var(--gray-soft); padding: 4px; border-radius: 8px; }
+    .tab {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .tab.active { background: var(--surface); color: var(--text); box-shadow: var(--shadow); }
+
+    .toolbar-spacer { flex: 1; }
+
+    .select {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* ---------- Table ---------- */
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      background: #fbfcfe;
+      white-space: nowrap;
+    }
+    th.num, td.num { text-align: right; }
+    tbody td { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--primary-soft); }
+    td .ref { font-weight: 600; color: var(--primary); text-decoration: none; }
+    td .muted { color: var(--text-muted); font-size: 12px; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge.paid { background: var(--green-soft); color: var(--green); }
+    .badge.pending { background: var(--amber-soft); color: var(--amber); }
+    .badge.overdue { background: var(--red-soft); color: var(--red); }
+    .badge.draft { background: var(--gray-soft); color: var(--text-muted); }
+
+    /* ---------- Empty state ---------- */
+    .empty {
+      padding: 60px 24px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .empty .icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 14px;
+    }
+    .empty h3 { color: var(--text); font-size: 16px; margin-bottom: 4px; }
+    .empty p { max-width: 380px; margin: 0 auto 18px; }
+
+    .table-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      color: var(--text-muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+    .pager { display: flex; gap: 6px; }
+    .pager button {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 7px;
+      padding: 6px 11px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .pager button:disabled { opacity: 0.5; cursor: default; }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 12px; }
+      .nav-group-label, .sidebar-footer { display: none; }
+      .nav-item { border-left: none; border-radius: 8px; padding: 8px 12px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .stats { grid-template-columns: 1fr; }
+      .search { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">G</div>
+        <span>Gestion Pro</span>
+      </div>
+
+      <span class="nav-group-label">Pilotage</span>
+      <a class="nav-item" href="#"><span class="ico">▦</span> Tableau de bord</a>
+
+      <span class="nav-group-label">Ventes</span>
+      <a class="nav-item active" href="#"><span class="ico">🧾</span> Devis &amp; Factures</a>
+      <a class="nav-item" href="#"><span class="ico">👥</span> Clients</a>
+      <a class="nav-item" href="#"><span class="ico">📦</span> Produits</a>
+
+      <span class="nav-group-label">Suivi</span>
+      <a class="nav-item" href="#"><span class="ico">💳</span> Règlements</a>
+      <a class="nav-item" href="#"><span class="ico">📊</span> Rapports</a>
+      <a class="nav-item" href="#"><span class="ico">⚙️</span> Paramètres</a>
+
+      <div class="sidebar-footer">
+        <div class="avatar">VC</div>
+        <div class="meta">
+          <strong>Votre Compte</strong><br>
+          <span>Administrateur</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== Main ===== -->
+    <div class="main">
+      <header class="topbar">
+        <div class="breadcrumb">Ventes / <strong>Devis &amp; Factures</strong></div>
+        <div class="topbar-actions">
+          <label class="search">
+            <span class="ico">🔍</span>
+            <input type="search" placeholder="Rechercher un document, un client…">
+          </label>
+          <button class="btn">🔔</button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="page-head">
+          <div>
+            <h1>Devis &amp; Factures</h1>
+            <p>Gérez vos documents commerciaux et suivez leur statut.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn">⬇ Exporter</button>
+            <button class="btn btn-primary">＋ Nouveau document</button>
+          </div>
+        </div>
+
+        <!-- Stat cards (structure prête, valeurs à remplir) -->
+        <section class="stats">
+          <div class="stat-card">
+            <div class="label">Total facturé</div>
+            <div class="value">— €</div>
+            <div class="sub">Période en cours</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">En attente</div>
+            <div class="value">— €</div>
+            <div class="sub">0 document</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">En retard</div>
+            <div class="value">— €</div>
+            <div class="sub">0 document</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Devis ouverts</div>
+            <div class="value">—</div>
+            <div class="sub">À transformer</div>
+          </div>
+        </section>
+
+        <!-- Tableau -->
+        <section class="panel">
+          <div class="toolbar">
+            <div class="tabs">
+              <button class="tab active">Tous</button>
+              <button class="tab">Devis</button>
+              <button class="tab">Factures</button>
+              <button class="tab">Brouillons</button>
+            </div>
+            <div class="toolbar-spacer"></div>
+            <select class="select">
+              <option>Tous les statuts</option>
+              <option>Payé</option>
+              <option>En attente</option>
+              <option>En retard</option>
+              <option>Brouillon</option>
+            </select>
+            <select class="select">
+              <option>30 derniers jours</option>
+              <option>Ce mois-ci</option>
+              <option>Ce trimestre</option>
+              <option>Cette année</option>
+            </select>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th style="width:36px;"><input type="checkbox" aria-label="Tout sélectionner"></th>
+                <th>Référence</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Échéance</th>
+                <th>Statut</th>
+                <th class="num">Montant TTC</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--
+                STRUCTURE D'UNE LIGNE — à dupliquer pour chaque document.
+                Statuts disponibles (classe sur le <span>) :
+                  paid    → Payé
+                  pending → En attente
+                  overdue → En retard
+                  draft   → Brouillon
+
+              <tr>
+                <td><input type="checkbox"></td>
+                <td><a class="ref" href="#">FAC-2026-0001</a><div class="muted">Facture</div></td>
+                <td>Nom du client</td>
+                <td>10/06/2026</td>
+                <td>10/07/2026</td>
+                <td><span class="badge pending">En attente</span></td>
+                <td class="num">1 200,00 €</td>
+                <td><button class="btn">⋯</button></td>
+              </tr>
+              -->
+            </tbody>
+          </table>
+
+          <!-- État vide (s'affiche tant qu'aucune ligne n'est ajoutée) -->
+          <div class="empty">
+            <div class="icon">🧾</div>
+            <h3>Aucun document pour le moment</h3>
+            <p>Créez votre premier devis ou facture, ou importez vos documents existants.</p>
+            <button class="btn btn-primary">＋ Créer un document</button>
+          </div>
+
+          <div class="table-footer">
+            <span>0 document affiché</span>
+            <div class="pager">
+              <button disabled>‹ Précédent</button>
+              <button disabled>Suivant ›</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
